@@ -9,11 +9,12 @@ $lang = [
     // =============================================
     // 导航栏 (Navegación)
     // =============================================
-    'nav_home' => '首页',
-    'nav_program' => '议程',
-    'nav_register' => '注册',
-    'nav_speakers' => '演讲嘉宾',
-    'nav_contact' => '联系我们',
+    "nav_home": "首页",
+    "nav_convocatoria": "征稿通知",
+    "nav_program": "日程",
+    "nav_library": "图书馆",
+    "nav_speakers": "演讲者",
+    "nav_contact": "联系我们",
     'btn_login' => '登录',
     'btn_register' => '注册',
     'site_title' => 'TESCo 2026 国际工业工程大会',
