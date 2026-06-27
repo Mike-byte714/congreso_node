@@ -335,7 +335,7 @@ img {
     width: 100%;
     text-align: left;
     padding: 10px 15px;
-    background: transparent;
+    background: red;
     border: none;
     font-size: 0.9rem;
     cursor: pointer;
