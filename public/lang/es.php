@@ -9,12 +9,12 @@ $lang = [
     // =============================================
     // Navegación
     // =============================================
-    'nav_home' => 'Inicio',
-    'nav_convocatoria' => 'Convocatoria',
-    'nav_program' => 'Programa',
-    'nav_register' => 'Registro',
-    'nav_speakers' => 'Ponentes',
-    'nav_contact' => 'Contacto',
+    "nav_home": "Inicio",
+    "nav_convocatoria": "Convocatoria",
+    "nav_program": "Programa",
+    "nav_library": "Biblioteca",
+    "nav_speakers": "Ponentes",
+    "nav_contact": "Contacto",
     'btn_login' => 'Iniciar Sesión',
     'btn_register' => 'Registrarse',
     'site_title' => 'Congreso Internacional de Ingeniería Industrial TESCo 2026',
