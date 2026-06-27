@@ -1,0 +1,88 @@
+    <footer class="footer" id="contacto">
+        <div class="container">
+
+            <div class="footer-grid">
+
+                <div class="footer-col">
+                    <h3 class="footer-title"><%= __('footer_contact_title') %></h3>
+                    <ul class="footer-contact-list">
+                        <li class="footer-contact-item">
+                            <i class="fa-solid fa-envelope"></i>
+                            <a href="mailto:<%= __('footer_email') %>">
+                                <%= __('footer_email') %>
+                            </a>
+                        </li>
+                        <li class="footer-contact-item">
+                            <i class="fa-solid fa-phone"></i>
+                            <a href="tel:5521594324">
+                                55 2159 4324
+                            </a>
+                        </li>
+                        <li class="footer-contact-item">
+                            <i class="fa-solid fa-map-marker-alt"></i>
+                            <span><%= __('footer_address') %></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3 class="footer-title"><%= __('footer_links_title') %></h3>
+                    <ul class="footer-links-list">
+                        <li class="footer-link-item">
+                            <a href="/privacidad" class="footer-link">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <%= __('footer_privacy') %>
+                            </a>
+                        </li>
+                        <li class="footer-link-item">
+                            <a href="/terminos" class="footer-link">
+                                <i class="fa-solid fa-file-contract"></i>
+                                <%= __('footer_terms') %>
+                            </a>
+                        </li>
+                        <li class="footer-link-item">
+                            <a href="#contacto" class="footer-link">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <%= __('footer_contact') %>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3 class="footer-title"><%= __('footer_social_title') %></h3>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/TESCO.Oficial/?locale=es_LA&checkpoint_src=any" 
+                           class="social-btn" target="_blank" rel="noopener noreferrer" title="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/comunidadtesco/" 
+                           class="social-btn" target="_blank" rel="noopener noreferrer" title="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="footer-privacy-notice">
+                <a href="/privacidad" class="privacy-notice-link">
+                    <i class="fa-solid fa-lock"></i>
+                    <%= __('footer_privacy_notice') %>
+                </a>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    <%= __('footer_copyright') %>
+                </p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/js/main.js"></script>
+
+</body>
+</html>

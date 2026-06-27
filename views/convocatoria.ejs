@@ -1,0 +1,536 @@
+<%- include('partials/header') %>
+
+<style>
+    .convocatoria-header {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        color: white;
+        padding: 120px 0 60px;
+        text-align: center;
+    }
+    .convocatoria-header h1 {
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-weight: 800;
+        margin-bottom: 20px;
+    }
+    .convocatoria-header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .convocatoria-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding: 60px 0;
+    }
+    
+    @media (min-width: 992px) {
+        .convocatoria-layout {
+            flex-direction: row;
+            align-items: flex-start;
+        }
+    }
+    
+    .sidebar-menu {
+        width: 100%;
+        background: white;
+        border-radius: var(--border-radius-card);
+        padding: 30px;
+        box-shadow: var(--shadow-card);
+    }
+    
+    @media (min-width: 992px) {
+        .sidebar-menu {
+            flex: 0 0 300px;
+            position: sticky;
+            top: 100px;
+        }
+    }
+    
+    .sidebar-menu h3 {
+        color: var(--primary-dark);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--bg-general);
+    }
+    
+    .sidebar-menu ul li {
+        margin-bottom: 10px;
+    }
+    
+    .sidebar-menu ul a {
+        display: block;
+        padding: 10px 15px;
+        border-radius: 10px;
+        color: var(--text-secondary);
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar-menu ul a:hover, .sidebar-menu ul a.active {
+        background: var(--bg-general);
+        color: var(--primary);
+        padding-left: 20px;
+    }
+    
+    .content-area {
+        flex: 1;
+        background: white;
+        border-radius: var(--border-radius-card);
+        padding: 40px;
+        box-shadow: var(--shadow-card);
+    }
+    
+    .content-section {
+        margin-bottom: 50px;
+        display: none;
+    }
+    
+    .content-section.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .content-section h2 {
+        color: var(--primary-dark);
+        font-size: 2rem;
+        margin-bottom: 25px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    
+    .content-section h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: var(--primary);
+        border-radius: 2px;
+    }
+    
+    .content-section h3 {
+        color: var(--text-primary);
+        font-size: 1.4rem;
+        margin: 30px 0 15px;
+    }
+    
+    .content-section p {
+        margin-bottom: 15px;
+        color: var(--text-secondary);
+        line-height: 1.8;
+    }
+    
+    .content-section ul {
+        list-style: disc;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        color: var(--text-secondary);
+    }
+    
+    .content-section ul li {
+        margin-bottom: 8px;
+    }
+    
+    .accordion-item {
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+    
+    .accordion-header {
+        background: var(--bg-general);
+        padding: 20px;
+        cursor: pointer;
+        font-weight: 700;
+        color: var(--primary-dark);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background 0.3s ease;
+    }
+    
+    .accordion-header:hover {
+        background: #e2e8f0;
+    }
+    
+    .accordion-content {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+        background: white;
+    }
+    
+    .accordion-item.active .accordion-content {
+        padding: 20px;
+        max-height: 2000px;
+    }
+    
+    .accordion-item.active .accordion-header i {
+        transform: rotate(180deg);
+    }
+    
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+        margin-top: 30px;
+    }
+    
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--primary-light);
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 30px;
+    }
+    
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -35px;
+        top: 5px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--primary);
+        border: 3px solid white;
+        box-shadow: 0 0 0 2px var(--primary-light);
+    }
+    
+    .timeline-date {
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 5px;
+    }
+    
+    .alert-box {
+        background: #f0fdf4;
+        border-left: 4px solid #16a34a;
+        padding: 20px;
+        border-radius: 0 10px 10px 0;
+        margin: 30px 0;
+    }
+</style>
+
+<div class="convocatoria-header">
+    <div class="container">
+        <h1>Convocatoria de Trabajos</h1>
+        <p>Participa en el 1er Congreso Internacional de Ingeniería Industrial: Innovación, Eficiencia y Desarrollo Sostenible con Responsabilidad Social.</p>
+    </div>
+</div>
+
+<main class="container convocatoria-layout">
+    <aside class="sidebar-menu">
+        <h3>Índice</h3>
+        <ul>
+            <li><a href="#" class="tab-link active" data-target="bases">Bases de Participación</a></li>
+            <li><a href="#" class="tab-link" data-target="ejes">Ejes Temáticos</a></li>
+            <li><a href="#" class="tab-link" data-target="lineamientos">Envío de Trabajos (Abstracts)</a></li>
+            <li><a href="#" class="tab-link" data-target="evaluacion">Proceso de Evaluación</a></li>
+            <li><a href="#" class="tab-link" data-target="fechas">Fechas Importantes</a></li>
+            <li><a href="#" class="tab-link" data-target="comite">Comité Organizador</a></li>
+        </ul>
+        
+        <div style="margin-top: 30px; text-align: center;">
+            <a href="/acceso" class="btn-primary" style="width: 100%;">Registrar Trabajo <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </aside>
+    
+    <section class="content-area">
+        
+        <!-- Sección 1: Bases -->
+        <div id="bases" class="content-section active">
+            <h2>Bases de Participación</h2>
+            <p>El Comité Organizador del <strong>1er Congreso Internacional de Ingeniería Industrial</strong> convoca a investigadores, docentes, estudiantes y profesionales de diversas áreas del conocimiento a participar en la presentación de trabajos académicos y aplicados.</p>
+            
+            <div class="alert-box">
+                <p style="margin:0; color: #166534;"><strong>Objetivo del congreso:</strong> Promover la integración y difusión de trabajos académicos y aplicados que contribuyan al análisis, diseño y mejora de sistemas industriales, organizacionales y sociales, mediante enfoques innovadores, eficientes y con impacto social.</p>
+            </div>
+            
+            <h3>Perfil de trabajos aceptados</h3>
+            <p>Se recibirán trabajos que presenten:</p>
+            <ul>
+                <li>Análisis estructurado de problemas reales o teóricos</li>
+                <li>Uso adecuado de metodologías (cuantitativas, cualitativas o mixtas)</li>
+                <li>Coherencia entre objetivo, desarrollo y resultados</li>
+                <li>Aportación al conocimiento o a la mejora de sistemas</li>
+                <li>Claridad en la redacción y presentación</li>
+            </ul>
+            
+            <p>Los trabajos podrán ser de carácter:</p>
+            <ul>
+                <li>Investigación aplicada</li>
+                <li>Desarrollo tecnológico</li>
+                <li>Estudios de caso</li>
+                <li>Propuestas metodológicas</li>
+                <li>Análisis teóricos con sustento académico</li>
+            </ul>
+            
+            <h3>Modalidades de participación</h3>
+            <ul>
+                <li><strong>Ponencia oral virtual</strong></li>
+                <li><strong>Presentación de cartel (presencial)</strong></li>
+            </ul>
+            <p><small>La asignación de modalidad será determinada por el Comité Académico en función de la naturaleza del trabajo y la programación del evento.</small></p>
+        </div>
+        
+        <!-- Sección 2: Ejes Temáticos -->
+        <div id="ejes" class="content-section">
+            <h2>Ejes Temáticos</h2>
+            <p>Los trabajos deberán inscribirse en alguno de los siguientes 4 ejes temáticos:</p>
+            
+            <div class="accordion">
+                <!-- Eje 1 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>1. Análisis de datos y toma de decisiones</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p style="margin-top: 15px;">Estudios orientados al uso de datos, modelación, análisis e interpretación para la mejora de sistemas y la toma de decisiones fundamentadas.</p>
+                    </div>
+                </div>
+                
+                <!-- Eje 2 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>2. Sostenibilidad y Responsabilidad Social</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p style="margin-top: 15px;">Propuestas y análisis relacionados con el uso responsable de recursos, impacto ambiental, eficiencia sostenible y compromiso social en sistemas productivos y organizacionales.</p>
+                    </div>
+                </div>
+                
+                <!-- Eje 3 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>3. Logística y Cadena de Suministro</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p style="margin-top: 15px;">Investigaciones enfocadas en la gestión, optimización y coordinación de flujos de materiales, información y recursos en sistemas logísticos.</p>
+                    </div>
+                </div>
+                
+                <!-- Eje 4 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>4. Educación, Investigación y Formación</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p style="margin-top: 15px;">Trabajos relacionados con procesos educativos, formación profesional, innovación académica y desarrollo de investigación en ingeniería y áreas afines.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección 3: Lineamientos -->
+        <div id="lineamientos" class="content-section">
+            <h2>Lineamientos para Envío (Abstracts)</h2>
+            <p>La evaluación inicial para participación en el congreso se realizará <strong>exclusivamente sobre resúmenes (abstracts)</strong>.</p>
+            
+            <div class="alert-box">
+                <h3 style="margin-top: 0; color: #166534;">Requisitos del Resumen</h3>
+                <ul style="color: #166534; margin-bottom: 0;">
+                    <li><strong>Extensión:</strong> De 250 a 300 palabras.</li>
+                    <li><strong>Palabras clave:</strong> Incluir de 3 a 5 palabras clave.</li>
+                    <li><strong>Idioma:</strong> Español o Inglés.</li>
+                    <li><strong>Formato:</strong> Documento en formato Word o PDF.</li>
+                </ul>
+            </div>
+            
+            <h3>Estructura obligatoria del resumen</h3>
+            <p>El documento debe contener claramente delineados los siguientes apartados:</p>
+            <ul>
+                <li><strong>Objetivo:</strong> ¿Qué busca resolver o investigar el trabajo?</li>
+                <li><strong>Metodología:</strong> ¿Cómo se llevó a cabo el estudio?</li>
+                <li><strong>Resultados principales:</strong> ¿Cuáles fueron los hallazgos más relevantes?</li>
+                <li><strong>Aportación del trabajo:</strong> ¿Cuál es el impacto, conclusión o valor agregado?</li>
+            </ul>
+        </div>
+        
+        <!-- Sección 4: Evaluación -->
+        <div id="evaluacion" class="content-section">
+            <h2>Proceso de Evaluación</h2>
+            <p>Todos los trabajos serán sometidos a un riguroso proceso de evaluación académica, por pares ciegos, coordinado por el <strong>Comité de Evaluación</strong> y el <strong>Comité Científico</strong>.</p>
+            
+            <h3>Criterios de Evaluación</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                <div style="background: var(--bg-general); padding: 20px; border-radius: 10px;">
+                    <i class="fa-solid fa-bullseye" style="color: var(--primary); font-size: 1.5rem; margin-bottom: 10px;"></i>
+                    <h4 style="margin-bottom: 10px;">Planteamiento</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Claridad del problema planteado y su pertinencia dentro del eje temático.</p>
+                </div>
+                <div style="background: var(--bg-general); padding: 20px; border-radius: 10px;">
+                    <i class="fa-solid fa-flask" style="color: var(--primary); font-size: 1.5rem; margin-bottom: 10px;"></i>
+                    <h4 style="margin-bottom: 10px;">Metodología</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Coherencia metodológica y calidad del análisis de datos.</p>
+                </div>
+                <div style="background: var(--bg-general); padding: 20px; border-radius: 10px;">
+                    <i class="fa-solid fa-chart-line" style="color: var(--primary); font-size: 1.5rem; margin-bottom: 10px;"></i>
+                    <h4 style="margin-bottom: 10px;">Resultados</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Sustento de los resultados y su contribución al conocimiento o aplicación práctica.</p>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 30px;">Dictámenes posibles</h3>
+            <ul>
+                <li><span style="color: #16a34a; font-weight: bold;">Aceptado</span></li>
+                <li><span style="color: #ca8a04; font-weight: bold;">Aceptado con ajustes</span></li>
+                <li><span style="color: #dc2626; font-weight: bold;">No aceptado</span></li>
+            </ul>
+            
+            <div class="alert-box" style="border-left-color: var(--primary); background-color: var(--bg-general);">
+                <h4 style="margin-top: 0; color: var(--primary-dark);">Envío del artículo en extenso (Publicación)</h4>
+                <p style="margin-bottom: 0;">Una vez aceptado para ponencia, se deberá enviar el trabajo in extenso utilizando la plantilla oficial del congreso, la cual se podrá descargar del sitio oficial. Todos los trabajos serán sometidos a un proceso de evaluación académica por parte del Comité de Evaluación y el Comité Científico del artículo in extenso que se deberá subir a la plataforma para su revisión y adición al <strong>número especial con formato capítulo de libro</strong>.</p>
+                <p style="margin-top: 10px; margin-bottom: 0;">El formato deberá ser requisado y editado por los autores. El envío del trabajo será la versión final (record versión), lo que significa que no habrá más modificaciones.</p>
+            </div>
+            
+            <p><small>* La notificación de consideración de ponencia se dará a conocer por medio de notificación de correo.</small></p>
+        </div>
+        
+        <!-- Sección 5: Fechas -->
+        <div id="fechas" class="content-section">
+            <h2>Fechas Importantes</h2>
+            <p>Te sugerimos tener presentes las siguientes fechas para la preparación y envío de tu trabajo.</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Junio 2026</div>
+                    <h4>Publicación de convocatoria</h4>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Junio – Agosto 2026</div>
+                    <h4>Recepción de trabajos</h4>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Agosto 2026</div>
+                    <h4>Evaluación de trabajos</h4>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Septiembre 2026</div>
+                    <h4>Publicación de resultados</h4>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">4 y 5 de Noviembre 2026</div>
+                    <h4 style="color: var(--primary-dark); font-size: 1.2rem;">Congreso Internacional TESCo</h4>
+                    <p>Presentación de ponencias y carteles.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección 6: Comité Organizador -->
+        <div id="comite" class="content-section">
+            <h2>Comité Organizador</h2>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                    <tbody>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0; font-weight: bold; background: var(--bg-general); width: 30%;">Presidente</td>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0;">Dr. Mauricio De la Cruz</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0; font-weight: bold; background: var(--bg-general);">Coordinador académico</td>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0;">Mtro. Javier Nava</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0; font-weight: bold; background: var(--bg-general);">Coordinación logística</td>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0;">
+                                Mtro. Leonardo Rangel<br>
+                                Mtra. Andrea Molina Muñoz<br>
+                                Mtro. Hugo Chantez Osorio
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0; font-weight: bold; background: var(--bg-general);">Coordinación de difusión</td>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0;">
+                                Mtra. Liliana Vázquez Téllez<br>
+                                Ing. Gerardo Froylán Godínez Pérez<br>
+                                Mtra. Andrea Molina Muñoz
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0; font-weight: bold; background: var(--bg-general);">Coordinación de evaluación</td>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0;">
+                                Dra. Verónica Velázquez Romero<br>
+                                Dr. Marco Antonio Michel Castro<br>
+                                Dr. Daniel Sánchez Huerta
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0; font-weight: bold; background: var(--bg-general);">Comité científico</td>
+                            <td style="padding: 12px; border: 1px solid #e2e8f0;">
+                                Dr. Rojel Retes Mantilla<br>
+                                Mtro. David Tercero Méndez<br>
+                                Mtra. María de la Luz Dávila Flores<br>
+                                Mtro. Richard González Padilla
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="color: var(--primary-dark); margin-top: 40px;">Consideraciones finales</h3>
+            <p>La participación en el congreso implica la aceptación de los lineamientos establecidos en la presente convocatoria. Los trabajos deberán ser originales y cumplir con criterios de rigor académico. Los resultados del proceso de evaluación serán inapelables.</p>
+
+            <h3 style="color: var(--primary-dark); margin-top: 30px;">Contacto</h3>
+            <p style="margin-bottom: 5px;"><i class="fa-solid fa-envelope" style="color: var(--primary); margin-right: 10px;"></i> <a href="mailto:congresointernacionaliind@tesco.edu.mx" style="color: var(--text-primary);">congresointernacionaliind@tesco.edu.mx</a></p>
+            <p><i class="fa-solid fa-envelope" style="color: var(--primary); margin-right: 10px;"></i> <a href="mailto:congresointernacionaliind@coacalco.tecmn.mx" style="color: var(--text-primary);">congresointernacionaliind@coacalco.tecmn.mx</a></p>
+            
+            <p style="text-align: center; margin-top: 40px; font-weight: bold; color: var(--text-secondary); letter-spacing: 1px;">ATENTAMENTE<br>TECNOLÓGICO DE ESTUDIOS SUPERIORES DE COACALCO</p>
+        </div>
+        
+    </section>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const sections = document.querySelectorAll('.content-section');
+    
+    tabLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            tabLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            
+            sections.forEach(s => s.classList.remove('active'));
+            const targetId = link.getAttribute('data-target');
+            document.getElementById(targetId).classList.add('active');
+            
+            if (window.innerWidth < 992) {
+                document.querySelector('.content-area').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+    
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const item = header.parentElement;
+            item.classList.toggle('active');
+        });
+    });
+});
+</script>
+
+<%- include('partials/footer') %>

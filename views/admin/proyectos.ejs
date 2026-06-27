@@ -1,0 +1,74 @@
+<%- include('../partials/header') %>
+
+<div class="page-header" style="padding: 100px 0 30px;">
+    <div class="container">
+        <h1><%= __('admin_dashboard') %> - <%= __('admin_projects') %></h1>
+    </div>
+</div>
+
+<main class="container" style="padding: 40px 20px; min-height: 50vh;">
+    <div class="dashboard-grid">
+        <div class="sidebar-nav">
+            <a href="/admin/dashboard"><i class="fa-solid fa-chart-pie"></i> Resumen</a>
+            <a href="/admin/proyectos" class="active"><i class="fa-solid fa-file-alt"></i> <%= __('admin_projects') %></a>
+            <a href="/auth/logout" style="color: #ef4444; border-top: 1px solid #eee; margin-top: 10px;"><i class="fa-solid fa-sign-out-alt"></i> <%= __('admin_logout') %></a>
+        </div>
+        
+        <div class="dashboard-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="color: var(--primary-dark);"><i class="fa-solid fa-file-alt"></i> Proyectos Recibidos</h2>
+            </div>
+            
+            <div class="dashboard-card" style="overflow-x: auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Usuario</th>
+                            <th>Área</th>
+                            <th>Estado</th>
+                            <th>Archivo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% projects.forEach(p => { %>
+                        <tr>
+                            <td><%= p.id %></td>
+                            <td><strong><%= p.title %></strong></td>
+                            <td><%= p.author_name || p.username %></td>
+                            <td><%= p.area %></td>
+                            <td>
+                                <form action="/admin/proyectos/<%= p.id %>/status" method="POST" style="display:inline;">
+                                    <select name="status" onchange="this.form.submit()" class="form-control" style="padding: 5px; width: 120px;">
+                                        <option value="recibido" <%= p.status==='recibido'?'selected':'' %>>Recibido</option>
+                                        <option value="en_revision" <%= p.status==='en_revision'?'selected':'' %>>En revisión</option>
+                                        <option value="aceptado" <%= p.status==='aceptado'?'selected':'' %>>Aceptado</option>
+                                        <option value="rechazado" <%= p.status==='rechazado'?'selected':'' %>>Rechazado</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td>
+                                <% if (p.file_path) { %>
+                                <a href="/project/download/<%= p.id %>" class="btn-secondary" style="padding: 3px 10px; font-size: 0.8rem;"><i class="fa-solid fa-download"></i></a>
+                                <% } else { %>
+                                N/A
+                                <% } %>
+                            </td>
+                            <td class="admin-actions">
+                                <button title="<%= __('admin_delete') %>" style="color: #ef4444;" onclick="confirm('<%= __('admin_confirm_delete') %>')"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <% }) %>
+                        <% if (projects.length === 0) { %>
+                        <tr><td colspan="7" style="text-align: center;">No hay proyectos recibidos</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('../partials/footer') %>

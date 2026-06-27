@@ -1,0 +1,210 @@
+<?php
+/**
+ * Archivo de idioma: Chino Simplificado (zh)
+ * Congreso Internacional de Ingeniería Industrial TESCo 2026
+ * Contiene todas las traducciones en chino simplificado para la plataforma
+ */
+
+$lang = [
+    // =============================================
+    // 导航栏 (Navegación)
+    // =============================================
+    'nav_home' => '首页',
+    'nav_program' => '议程',
+    'nav_register' => '注册',
+    'nav_speakers' => '演讲嘉宾',
+    'nav_contact' => '联系我们',
+    'btn_login' => '登录',
+    'btn_register' => '注册',
+    'site_title' => 'TESCo 2026 国际工业工程大会',
+    'site_subtitle' => '面向未来的技术创新',
+
+    // =============================================
+    // 主横幅区域 (Sección Hero)
+    // =============================================
+    'hero_title' => 'TESCo 2026 国际工业工程大会',
+    'hero_subtitle' => '面向未来的技术创新',
+    'hero_description' => '为研究人员、教师和学生提供的交流平台',
+    'hero_btn' => '立即注册',
+
+    // =============================================
+    // 活动信息 (Información del evento)
+    // =============================================
+    'event_info_title' => '活动信息',
+    'event_date_label' => '日期',
+    'event_date_value' => '2026年11月4日至5日',
+    'event_location_label' => '地点',
+    'event_location_value' => '墨西哥州科阿卡尔科高等技术学院',
+    'event_modality_label' => '形式',
+    'event_modality_value' => '线上线下混合模式',
+    'event_edition_label' => '届次',
+    'event_edition_value' => '第一届',
+
+    // =============================================
+    // 倒计时 (Cuenta regresiva)
+    // =============================================
+    'countdown_title' => '大会倒计时...',
+    'countdown_days' => '天',
+    'countdown_hours' => '小时',
+    'countdown_minutes' => '分钟',
+    'countdown_seconds' => '秒',
+    'countdown_expired' => '大会已经开始！',
+
+    // =============================================
+    // 参与者地图 (Mapa de participantes)
+    // =============================================
+    'map_title' => '来自世界各地的参与者',
+    'map_description' => '我们的大会汇聚了来自世界各地的研究人员和专业人士',
+    'map_stat_countries' => '来自超过10个国家的参与者',
+    'map_stat_attendees' => '预计500+位与会者',
+    'map_stat_speakers' => '20+位特邀演讲嘉宾',
+
+    // =============================================
+    // 国际演讲嘉宾 (Ponentes internacionales)
+    // =============================================
+    'speakers_title' => '国际演讲嘉宾',
+    'speakers_bio_btn' => '查看简介',
+    'speakers_institution' => '所属机构',
+    'speakers_country' => '国家',
+    'speakers_modal_close' => '关闭',
+
+    // =============================================
+    // 大会统计数据 (Estadísticas del congreso)
+    // =============================================
+    'stats_title' => '大会数据一览',
+    'stats_attendees' => '预计与会者',
+    'stats_speakers' => '特邀演讲嘉宾',
+    'stats_countries' => '参与国家',
+    'stats_graduates' => '毕业生与雇主',
+    'stats_call_open' => '公开征稿',
+    'stats_papers' => '已收到的研究论文',
+    'stats_institutions' => '受邀机构',
+    'stats_lectures' => '预定讲座',
+
+    // =============================================
+    // 主办方与赞助商 (Organizadores y patrocinadores)
+    // =============================================
+    'organizers_title' => '主办方',
+    'sponsors_title' => '赞助商',
+
+    // =============================================
+    // 图片画廊 (Galería de imágenes)
+    // =============================================
+    'gallery_title' => '图片画廊',
+
+    // =============================================
+    // 页脚 (Pie de página)
+    // =============================================
+    'footer_contact_title' => '联系方式',
+    'footer_links_title' => '链接',
+    'footer_social_title' => '社交媒体',
+    'footer_email' => 'congreso@tesco.edu.mx',
+    'footer_phone' => '55 2159 4324',
+    'footer_address' => '墨西哥州科阿卡尔科高等技术学院',
+    'footer_privacy' => '隐私政策',
+    'footer_terms' => '条款与条件',
+    'footer_contact' => '联系我们',
+    'footer_privacy_notice' => '隐私政策 - 了解我们如何保护您的数据',
+    'footer_copyright' => '© 2026 TESCo 国际大会。保留所有权利。',
+    
+    // Certificates
+    'certificate_download' => '下载证书',
+    'certificate_available' => '您的参与证书已准备就绪，可以下载。',
+    'certificate_not_available' => '您的项目一经批准，即可获得参与证书。',
+
+    // =============================================
+    // 登录与注册 (Acceso / Inicio de sesión)
+    // =============================================
+    'login_title' => '登录',
+    'login_username' => '用户名或电子邮箱',
+    'login_password' => '密码',
+    'login_btn' => '登录',
+    'login_forgot' => '忘记密码？',
+    'login_google' => '使用 Google 账号登录',
+    'login_no_account' => '还没有账号？',
+    'register_title' => '创建账号',
+    'register_fullname' => '全名',
+    'register_email' => '电子邮箱',
+    'register_username' => '用户名',
+    'register_institution' => '所属机构',
+    'register_country' => '国家',
+    'register_password' => '密码',
+    'register_confirm' => '确认密码',
+    'register_btn' => '创建账号',
+    'register_has_account' => '已有账号？',
+
+    // =============================================
+    // 活动议程 (Programa del evento)
+    // =============================================
+    'program_title' => '活动议程',
+    'program_day1' => '第一天 - 11月4日',
+    'program_day2' => '第二天 - 11月5日',
+    'program_time' => '时间',
+    'program_activity' => '活动',
+    'program_speaker' => '演讲嘉宾',
+    'program_type' => '类型',
+
+    // =============================================
+    // 数字图书馆 (Biblioteca digital)
+    // =============================================
+    'library_title' => '数字图书馆',
+    'library_search' => '搜索文章...',
+    'library_authors' => '作者',
+    'library_institution' => '机构',
+    'library_download' => '下载 PDF',
+    'library_no_results' => '未找到结果',
+
+    // =============================================
+    // 用户仪表板 (Panel de usuario)
+    // =============================================
+    'dashboard_title' => '我的面板',
+    'dashboard_welcome' => '欢迎',
+    'dashboard_my_projects' => '我的项目',
+    'dashboard_submit' => '提交项目',
+    'dashboard_status' => '状态',
+    'dashboard_no_projects' => '您还没有注册的项目',
+    'project_title' => '项目标题',
+    'project_abstract' => '摘要',
+    'project_authors' => '作者',
+    'project_institution' => '机构',
+    'project_country' => '国家',
+    'project_area' => '主题领域',
+    'project_file' => 'PDF 文件',
+    'project_submit_btn' => '提交项目',
+    'project_status_received' => '已接收',
+    'project_status_review' => '审核中',
+    'project_status_accepted' => '已接受',
+    'project_status_rejected' => '已拒绝',
+
+    // =============================================
+    // 管理面板 (Panel de administración)
+    // =============================================
+    'admin_dashboard' => '管理面板',
+    'admin_users' => '用户',
+    'admin_speakers' => '演讲嘉宾',
+    'admin_projects' => '项目',
+    'admin_program' => '议程',
+    'admin_add' => '添加',
+    'admin_edit' => '编辑',
+    'admin_delete' => '删除',
+    'admin_save' => '保存',
+    'admin_cancel' => '取消',
+    'admin_confirm_delete' => '您确定要删除此记录吗？',
+    'admin_total_users' => '用户总数',
+    'admin_total_speakers' => '演讲嘉宾总数',
+    'admin_total_projects' => '项目总数',
+    'admin_logout' => '退出登录',
+    'admin_back_site' => '返回网站',
+
+    // =============================================
+    // 通用消息 (Mensajes generales)
+    // =============================================
+    'loading' => '加载中...',
+    'error_generic' => '发生错误，请重试。',
+    'success_generic' => '操作成功。',
+    'btn_close' => '关闭',
+    'btn_save' => '保存',
+    'btn_cancel' => '取消',
+    'btn_submit' => '提交',
+    'btn_back' => '返回',
+];

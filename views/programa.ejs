@@ -1,0 +1,93 @@
+<%- include('partials/header') %>
+
+<%
+const schedule_day1 = [
+    { time: '09:00 - 10:00', title: 'Registro e Inauguración', type: 'inauguración', speaker: 'Autoridades TESCo' },
+    { time: '10:00 - 11:30', title: 'El Futuro de la Industria 4.0 en América Latina', type: 'conferencia magistral', speaker: 'Dr. Carlos Mendoza' },
+    { time: '11:30 - 12:00', title: 'Receso / Coffee Break', type: 'receso', speaker: '' },
+    { time: '12:00 - 14:00', title: 'Optimización de Cadenas de Suministro Globales', type: 'conferencia magistral', speaker: 'Dra. Sarah Johnson' },
+    { time: '14:00 - 16:00', title: 'Comida', type: 'receso', speaker: '' },
+    { time: '16:00 - 18:00', title: 'Taller: Lean Manufacturing con IA', type: 'taller', speaker: 'Dr. Kenji Tanaka' }
+];
+
+const schedule_day2 = [
+    { time: '09:30 - 11:00', title: 'Sostenibilidad y Economía Circular en Manufactura', type: 'conferencia magistral', speaker: 'Dra. Ana Silva' },
+    { time: '11:00 - 11:30', title: 'Receso / Coffee Break', type: 'receso', speaker: '' },
+    { time: '11:30 - 13:30', title: 'Robótica Avanzada y Automatización', type: 'conferencia magistral', speaker: 'Dr. Wei Zhang' },
+    { time: '13:30 - 15:00', title: 'Comida', type: 'receso', speaker: '' },
+    { time: '15:00 - 17:00', title: 'Mesa Redonda: Retos de los Ingenieros Industriales', type: 'mesa redonda', speaker: 'Varios Ponentes' },
+    { time: '17:00 - 18:00', title: 'Clausura y Entrega de Reconocimientos', type: 'clausura', speaker: 'Comité Organizador' }
+];
+%>
+
+<div class="page-header">
+    <div class="container">
+        <h1><%= __('program_title') %></h1>
+    </div>
+</div>
+
+<main class="container" style="padding: 60px 20px;">
+    
+    <div class="schedule-tabs">
+        <button class="tab-btn active" onclick="showDay('day1', this)"><%= __('program_day1') %></button>
+        <button class="tab-btn" onclick="showDay('day2', this)"><%= __('program_day2') %></button>
+    </div>
+
+    <div id="day1" class="schedule-container animate-on-scroll">
+        <% schedule_day1.forEach(item => { %>
+        <div class="schedule-item">
+            <div class="schedule-time"><%= item.time %></div>
+            <div class="schedule-content">
+                <h3 style="margin-bottom: 5px;"><%= item.title %></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 10px;">
+                    <span style="display: inline-block; padding: 3px 10px; background: var(--bg-general); border-radius: 15px; font-size: 0.85rem; margin-right: 10px;">
+                        <%= item.type.charAt(0).toUpperCase() + item.type.slice(1) %>
+                    </span>
+                    <% if (item.speaker) { %>
+                        <i class="fa-solid fa-user" style="color: var(--primary);"></i> <%= item.speaker %>
+                    <% } %>
+                </p>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+
+    <div id="day2" class="schedule-container" style="display: none;">
+        <% schedule_day2.forEach(item => { %>
+        <div class="schedule-item">
+            <div class="schedule-time"><%= item.time %></div>
+            <div class="schedule-content">
+                <h3 style="margin-bottom: 5px;"><%= item.title %></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 10px;">
+                    <span style="display: inline-block; padding: 3px 10px; background: var(--bg-general); border-radius: 15px; font-size: 0.85rem; margin-right: 10px;">
+                        <%= item.type.charAt(0).toUpperCase() + item.type.slice(1) %>
+                    </span>
+                    <% if (item.speaker) { %>
+                        <i class="fa-solid fa-user" style="color: var(--primary);"></i> <%= item.speaker %>
+                    <% } %>
+                </p>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</main>
+
+<script>
+function showDay(dayId, btn) {
+    document.getElementById('day1').style.display = 'none';
+    document.getElementById('day2').style.display = 'none';
+    
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    
+    document.getElementById(dayId).style.display = 'block';
+    document.getElementById(dayId).style.opacity = 0;
+    setTimeout(() => {
+        document.getElementById(dayId).style.transition = 'opacity 0.5s ease';
+        document.getElementById(dayId).style.opacity = 1;
+    }, 50);
+    
+    btn.classList.add('active');
+}
+</script>
+
+<%- include('partials/footer') %>

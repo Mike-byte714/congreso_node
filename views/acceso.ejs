@@ -1,0 +1,95 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+    <div class="container">
+        <h1><%= __('login_title') %> / <%= __('register_title') %></h1>
+    </div>
+</div>
+
+<main class="container">
+    <div class="auth-container">
+        <!-- Login Form -->
+        <div class="auth-panel" id="login">
+            <h2 class="auth-title"><%= __('login_title') %></h2>
+            
+            <form action="/auth/login" method="POST">
+                <div class="form-group">
+                    <label for="username"><%= __('login_username') %></label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password"><%= __('login_password') %></label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+                <div class="form-options">
+                    <label><input type="checkbox"> Recordarme</label>
+                    <a href="#" style="color: var(--primary);"><%= __('login_forgot') %></a>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;"><%= __('login_btn') %></button>
+            </form>
+            
+            <div style="text-align: center; margin: 20px 0; color: var(--text-secondary);">O inicia sesión con</div>
+            
+            <div style="display: flex; justify-content: center;">
+                <script src="https://accounts.google.com/gsi/client" async defer></script>
+                <div id="g_id_onload"
+                     data-client_id="358668615160-icec4contl9ssmmqtrdmctg7c7ntucb4.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-login_uri="<%= typeof process !== 'undefined' && process.env.SITE_URL ? process.env.SITE_URL : 'http://localhost:3000' %>/auth/google-callback"
+                     data-auto_prompt="false">
+                </div>
+
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="outline"
+                     data-text="signin_with"
+                     data-size="large"
+                     data-logo_alignment="left">
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div class="auth-panel" id="registro">
+            <h2 class="auth-title"><%= __('register_title') %></h2>
+
+            <form action="/auth/register" method="POST">
+                <div class="form-group">
+                    <label for="reg_fullname"><%= __('register_fullname') %> *</label>
+                    <input type="text" id="reg_fullname" name="fullname" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg_email"><%= __('register_email') %> *</label>
+                    <input type="email" id="reg_email" name="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg_username"><%= __('register_username') %> *</label>
+                    <input type="text" id="reg_username" name="username" class="form-control" required>
+                </div>
+                <div class="form-group" style="display: flex; gap: 15px;">
+                    <div style="flex: 1;">
+                        <label for="reg_institution"><%= __('register_institution') %></label>
+                        <input type="text" id="reg_institution" name="institution" class="form-control">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="reg_country"><%= __('register_country') %></label>
+                        <input type="text" id="reg_country" name="country" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reg_password"><%= __('register_password') %> *</label>
+                    <input type="password" id="reg_password" name="password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg_confirm_password"><%= __('register_confirm') %> *</label>
+                    <input type="password" id="reg_confirm_password" name="confirm_password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;"><%= __('register_btn') %></button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('partials/footer') %>

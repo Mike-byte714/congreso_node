@@ -1,0 +1,125 @@
+<%- include('partials/header') %>
+
+<div class="page-header" style="padding: 100px 0 30px;">
+    <div class="container">
+        <h1><%= __('dashboard_title') %></h1>
+        <p><%= __('dashboard_welcome') %>, <%= user.fullname %></p>
+    </div>
+</div>
+
+<main class="container" style="padding: 40px 20px; min-height: 50vh;">
+    
+    <div class="dashboard-grid">
+        <div class="sidebar-nav">
+            <a href="#" class="active"><i class="fa-solid fa-folder-open"></i> <%= __('dashboard_my_projects') %></a>
+            <a href="#nuevo"><i class="fa-solid fa-plus-circle"></i> <%= __('dashboard_submit') %></a>
+            <div style="padding: 12px 25px; font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-top: 10px;">Registro por Eje</div>
+            <a href="/convocatoria#ejes" style="font-size: 0.875rem;"><i class="fa-solid fa-chart-bar"></i> Eje 1: Datos</a>
+            <a href="/convocatoria#ejes" style="font-size: 0.875rem;"><i class="fa-solid fa-leaf"></i> Eje 2: Sostenibilidad</a>
+            <a href="/convocatoria#ejes" style="font-size: 0.875rem;"><i class="fa-solid fa-truck"></i> Eje 3: Logística</a>
+            <a href="/convocatoria#ejes" style="font-size: 0.875rem;"><i class="fa-solid fa-graduation-cap"></i> Eje 4: Educación</a>
+            <a href="/auth/logout" style="color: #ef4444; border-top: 1px solid #eee; margin-top: 10px;"><i class="fa-solid fa-sign-out-alt"></i> Cerrar Sesión</a>
+        </div>
+        
+        <div class="dashboard-content">
+            
+            <h2 style="margin-bottom: 20px; color: var(--primary-dark);"><i class="fa-solid fa-list"></i> <%= __('dashboard_my_projects') %></h2>
+            
+            <% if (projects.length === 0) { %>
+                <div class="dashboard-card" style="text-align: center; color: var(--text-secondary); padding: 50px 20px;">
+                    <i class="fa-solid fa-folder-open" style="font-size: 3rem; margin-bottom: 15px; color: #cbd5e1;"></i>
+                    <p><%= __('dashboard_no_projects') %></p>
+                </div>
+            <% } else { %>
+                <% projects.forEach(p => { %>
+                <div class="dashboard-card" style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h3 style="margin-bottom: 10px;"><%= p.title %></h3>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 10px;">
+                                <i class="fa-solid fa-users"></i> <%= p.authors %>
+                            </p>
+                        </div>
+                        <div>
+                            <% 
+                            let status_class = 'status-' + p.status;
+                            let status_text = __('project_status_' + p.status) || p.status;
+                            if (p.status === 'en_revision') status_class = 'status-revision';
+                            %>
+                            <span class="status-badge <%= status_class %>"><%= status_text %></span>
+                        </div>
+                    </div>
+                    <% if (p.status === 'aceptado') { %>
+                    <div style="margin-top: 15px; padding: 15px; background: #f0fdf4; border-radius: 10px; border: 1px solid #bbf7d0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <strong style="color: #15803d;"><i class="fa-solid fa-award"></i> <%= __('certificate_available') %></strong>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">Constancia oficial del 1er Congreso Internacional de Ingeniería Industrial</p>
+                        </div>
+                        <a href="/project/certificate/<%= p.id %>" class="btn-primary" style="padding: 8px 20px; font-size: 0.85rem; background-color: #16a34a; box-shadow: none;">
+                            <i class="fa-solid fa-download"></i> <%= __('certificate_download') %>
+                        </a>
+                    </div>
+                    <% } %>
+                    <% if (p.file_path) { %>
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+                        <a href="/project/download/<%= p.id %>" class="btn-secondary" style="padding: 5px 15px; font-size: 0.85rem;">
+                            <i class="fa-solid fa-file-pdf"></i> Ver Documento
+                        </a>
+                    </div>
+                    <% } %>
+                </div>
+                <% }) %>
+            <% } %>
+            
+            <div id="nuevo" style="margin-top: 50px;">
+                <h2 style="margin-bottom: 20px; color: var(--primary-dark);"><i class="fa-solid fa-upload"></i> <%= __('dashboard_submit') %></h2>
+                <div class="dashboard-card">
+                    <form action="/project/submit" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label><%= __('project_title') %> *</label>
+                            <input type="text" name="title" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label><%= __('project_authors') %> * (separados por coma)</label>
+                            <input type="text" name="authors" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label><%= __('project_abstract') %> *</label>
+                            <textarea name="abstract" class="form-control" rows="4" required></textarea>
+                        </div>
+                        <div style="display: flex; gap: 20px;">
+                            <div class="form-group" style="flex: 1;">
+                                <label><%= __('project_institution') %></label>
+                                <input type="text" name="institution" class="form-control">
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label><%= __('project_country') %></label>
+                                <input type="text" name="country" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><%= __('project_area') %> *</label>
+                            <select name="area" class="form-control" required>
+                                <option value="Eje 1: Análisis de datos y toma de decisiones">Eje 1: Análisis de datos y toma de decisiones</option>
+                                <option value="Eje 2: Sostenibilidad y responsabilidad social">Eje 2: Sostenibilidad y responsabilidad social</option>
+                                <option value="Eje 3: Logística y cadena de suministro">Eje 3: Logística y cadena de suministro</option>
+                                <option value="Eje 4: Educación, investigación y formación">Eje 4: Educación, investigación y formación</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><%= __('project_file') %> * (Formatos: PDF, Word. Máximo 25 GB)</label>
+                            <input type="file" name="project_file" class="form-control" accept=".pdf,.doc,.docx" required style="padding: 10px;">
+                        </div>
+                        <button type="submit" class="btn-primary" style="margin-top: 10px;">
+                            <i class="fa-solid fa-paper-plane"></i> <%= __('project_submit_btn') %>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="<%= lang === 'zh' ? 'zh-Hans' : lang %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><%= __('site_title') %></title>
+    <meta name="description" content="<%= __('hero_description') %>">
+    <meta name="keywords" content="congreso, ingeniería industrial, TESCo, 2026, innovación, tecnología, investigación">
+    <meta name="author" content="TESCo - Tecnológico de Estudios Superiores de Coacalco">
+
+    <meta property="og:title" content="<%= __('site_title') %>">
+    <meta property="og:description" content="<%= __('hero_description') %>">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" type="image/jpeg" href="/img/favicon.jpg">
+</head>
+<body>
+
+    <header class="header" id="header">
+        <div class="container">
+
+            <div class="logo-container">
+                <a href="/" class="logo-link">
+                    <img src="/img/logo.jpg" alt="Logo TESCo" class="logo-img logo-enlarged">
+                    <span class="logo-text">Congreso TESCo 2026</span>
+                </a>
+            </div>
+
+            <nav class="nav-menu" id="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">
+                            <i class="fa-solid fa-house"></i>
+                            <%= __('nav_home') %>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/convocatoria" class="nav-link">
+                            <i class="fa-solid fa-file-contract"></i>
+                            <%= __('nav_convocatoria') || 'Convocatoria' %>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/programa" class="nav-link">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <%= __('nav_program') %>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/biblioteca" class="nav-link">
+                            <i class="fa-solid fa-book"></i>
+                            Biblioteca
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/#ponentes" class="nav-link">
+                            <i class="fa-solid fa-microphone"></i>
+                            <%= __('nav_speakers') %>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contacto" class="nav-link">
+                            <i class="fa-solid fa-envelope"></i>
+                            <%= __('nav_contact') %>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <% if (user) { %>
+                    <div class="user-menu-header">
+                        <a href="<%= user.role === 'admin' ? '/admin/dashboard' : '/dashboard' %>" class="btn-user-name">
+                            <i class="fa-solid fa-user-circle"></i>
+                            <span class="btn-text"><%= user.fullname || user.username %></span>
+                        </a>
+                        <a href="/auth/logout" class="btn-logout-header" title="Cerrar sesión">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </a>
+                    </div>
+                <% } else { %>
+                    <a href="/acceso" class="btn-login">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span class="btn-text"><%= __('btn_login') %></span>
+                    </a>
+                <% } %>
+
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn">
+                        <% if (lang === 'es') { %><span class="lang-flag">🇲🇽</span> <span class="lang-text">ES ▼</span><% } %>
+                        <% if (lang === 'en') { %><span class="lang-flag">🇺🇸</span> <span class="lang-text">EN ▼</span><% } %>
+                        <% if (lang === 'zh') { %><span class="lang-flag">🇨🇳</span> <span class="lang-text">ZH ▼</span><% } %>
+                    </button>
+                    <div class="lang-dropdown-content">
+                        <a href="/lang/es" class="lang-btn"><span class="lang-flag">🇲🇽</span> Español</a>
+                        <a href="/lang/en" class="lang-btn"><span class="lang-flag">🇺🇸</span> English</a>
+                        <a href="/lang/zh" class="lang-btn"><span class="lang-flag">🇨🇳</span> 中文</a>
+                    </div>
+                </div>
+
+                <button class="dark-mode-toggle" id="dark-mode-toggle" title="Alternar modo oscuro">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
+                <button class="hamburger" id="hamburger" aria-label="Abrir menú de navegación">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <% if (typeof success_msg !== 'undefined' && success_msg) { %>
+        <div style="background-color: #d1fae5; color: #065f46; padding: 15px; text-align: center;">
+            <i class="fa-solid fa-check-circle"></i> <%= success_msg %>
+        </div>
+    <% } %>
+    
+    <% if (typeof error_msg !== 'undefined' && error_msg) { %>
+        <div style="background-color: #fee2e2; color: #991b1b; padding: 15px; text-align: center;">
+            <i class="fa-solid fa-triangle-exclamation"></i> <%= error_msg %>
+        </div>
+    <% } %>

@@ -1,0 +1,78 @@
+<%- include('partials/header') %>
+
+<%
+const library_items = [
+    { title: 'Análisis de Eficiencia en Líneas de Ensamblaje Automotriz', authors: 'Rodríguez, M., Pérez, J.', institution: 'TESCo', year: 2025 },
+    { title: 'Implementación de IoT para Mantenimiento Predictivo', authors: 'González, A.', institution: 'UNAM', year: 2026 },
+    { title: 'Ergonomía Cognitiva en Estaciones de Trabajo', authors: 'Martínez, L., Sánchez, R.', institution: 'IPN', year: 2025 },
+    { title: 'Reducción de Merma usando Six Sigma', authors: 'López, C.', institution: 'UAM', year: 2026 }
+];
+%>
+
+<div class="page-header">
+    <div class="container">
+        <h1><%= __('library_title') %></h1>
+    </div>
+</div>
+
+<main class="container" style="padding: 60px 20px; min-height: 50vh;">
+    
+    <div style="max-width: 600px; margin: 0 auto 40px;">
+        <div style="position: relative;">
+            <i class="fa-solid fa-search" style="position: absolute; left: 15px; top: 15px; color: var(--text-secondary);"></i>
+            <input type="text" id="library-search" class="form-control" placeholder="<%= __('library_search') %>" style="padding-left: 45px; border-radius: 30px;">
+        </div>
+    </div>
+
+    <div class="library-container animate-on-scroll" id="library-list">
+        <% library_items.forEach(item => { %>
+        <div class="article-card">
+            <h3 class="article-title" style="margin-bottom: 10px; color: var(--primary-dark);"><%= item.title %></h3>
+            <p class="article-authors" style="margin-bottom: 5px;"><strong><%= __('library_authors') %>:</strong> <%= item.authors %></p>
+            <p class="article-institution" style="color: var(--text-secondary); margin-bottom: 15px;">
+                <i class="fa-solid fa-university"></i> <%= item.institution %> &nbsp;|&nbsp; <i class="fa-solid fa-calendar"></i> <%= item.year %>
+            </p>
+            <button class="btn-secondary" style="padding: 5px 15px; font-size: 0.9rem;"><i class="fa-solid fa-download"></i> <%= __('library_download') %></button>
+        </div>
+        <% }) %>
+        
+        <div id="no-results" style="display: none; text-align: center; padding: 40px; color: var(--text-secondary);">
+            <i class="fa-solid fa-folder-open" style="font-size: 3rem; margin-bottom: 15px;"></i>
+            <p><%= __('library_no_results') %></p>
+        </div>
+    </div>
+
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('library-search');
+    const articles = document.querySelectorAll('.article-card');
+    const noResults = document.getElementById('no-results');
+    
+    searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        let visibleCount = 0;
+        
+        articles.forEach(article => {
+            const title = article.querySelector('.article-title').textContent.toLowerCase();
+            const authors = article.querySelector('.article-authors').textContent.toLowerCase();
+            
+            if (title.includes(query) || authors.includes(query)) {
+                article.style.display = 'block';
+                visibleCount++;
+            } else {
+                article.style.display = 'none';
+            }
+        });
+        
+        if (visibleCount === 0) {
+            noResults.style.display = 'block';
+        } else {
+            noResults.style.display = 'none';
+        }
+    });
+});
+</script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,297 @@
+<%- include('partials/header') %>
+
+<main>
+    <section id="inicio" class="hero-section">
+        <div class="carousel-container">
+            <div class="carousel-slide active" style="background-image: url('/img/slide1.jpg');">
+                <div class="carousel-overlay">
+                    <div class="carousel-content">
+                        <h1 class="carousel-title"><%= __('hero_title') %></h1>
+                        <h2 class="carousel-subtitle"><%= __('hero_subtitle') %></h2>
+                        <p class="carousel-description"><%= __('hero_description') %></p>
+                        <a href="/acceso" class="btn-primary carousel-btn"><%= __('hero_btn') %></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-slide" style="background-image: url('/img/slide2.jpg');">
+                <div class="carousel-overlay">
+                    <div class="carousel-content">
+                        <h1 class="carousel-title"><%= __('hero_title') %></h1>
+                        <h2 class="carousel-subtitle"><%= __('hero_subtitle') %></h2>
+                        <p class="carousel-description"><%= __('hero_description') %></p>
+                        <a href="/acceso" class="btn-primary carousel-btn"><%= __('hero_btn') %></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-slide" style="background-image: url('/img/slide3.jpg');">
+                <div class="carousel-overlay">
+                    <div class="carousel-content">
+                        <h1 class="carousel-title"><%= __('hero_title') %></h1>
+                        <h2 class="carousel-subtitle"><%= __('hero_subtitle') %></h2>
+                        <p class="carousel-description"><%= __('hero_description') %></p>
+                        <a href="/acceso" class="btn-primary carousel-btn"><%= __('hero_btn') %></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-arrows">
+                <button class="carousel-prev" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="carousel-next" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <div class="carousel-dots">
+                <div class="dot active" data-slide="0"></div>
+                <div class="dot" data-slide="1"></div>
+                <div class="dot" data-slide="2"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="informacion" class="info-section animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title"><%= __('event_info_title') %></h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fa-solid fa-calendar-days info-icon"></i>
+                    <h3 class="info-label"><%= __('event_date_label') %></h3>
+                    <p class="info-value"><%= __('event_date_value') %></p>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-location-dot info-icon"></i>
+                    <h3 class="info-label"><%= __('event_location_label') %></h3>
+                    <p class="info-value"><%= __('event_location_value') %></p>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-globe info-icon"></i>
+                    <h3 class="info-label"><%= __('event_modality_label') %></h3>
+                    <p class="info-value"><%= __('event_modality_value') %></p>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-building-columns info-icon"></i>
+                    <h3 class="info-label"><%= __('event_edition_label') %></h3>
+                    <p class="info-value"><%= __('event_edition_value') %></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cuenta-regresiva" class="countdown-section animate-on-scroll">
+        <div class="container">
+            <h2 class="countdown-title"><%= __('countdown_title') %></h2>
+            <div class="countdown-grid">
+                <div class="countdown-item">
+                    <div id="countdown-days" class="countdown-number">00</div>
+                    <div class="countdown-label"><%= __('countdown_days') %></div>
+                </div>
+                <div class="countdown-item">
+                    <div id="countdown-hours" class="countdown-number">00</div>
+                    <div class="countdown-label"><%= __('countdown_hours') %></div>
+                </div>
+                <div class="countdown-item">
+                    <div id="countdown-minutes" class="countdown-number">00</div>
+                    <div class="countdown-label"><%= __('countdown_minutes') %></div>
+                </div>
+                <div class="countdown-item">
+                    <div id="countdown-seconds" class="countdown-number">00</div>
+                    <div class="countdown-label"><%= __('countdown_seconds') %></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="mapa" class="map-section animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title"><%= __('map_title') %></h2>
+            <p class="map-description"><%= __('map_description') %></p>
+            
+            <div class="map-container">
+                <div class="map-stats">
+                    <div class="map-stat-item">
+                        <i class="fa-solid fa-globe-americas"></i>
+                        <span><%= __('map_stat_countries') %></span>
+                    </div>
+                    <div class="map-stat-item">
+                        <i class="fa-solid fa-users"></i>
+                        <span><%= __('map_stat_attendees') %></span>
+                    </div>
+                    <div class="map-stat-item">
+                        <i class="fa-solid fa-chalkboard-teacher"></i>
+                        <span><%= __('map_stat_speakers') %></span>
+                    </div>
+                </div>
+                <div id="map"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ponentes" class="speakers-section animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title"><%= __('speakers_title') %></h2>
+            
+            <div class="speakers-grid">
+                <div class="speaker-card">
+                    <div class="speaker-photo-container">
+                        <i class="fa-solid fa-user-circle speaker-icon-placeholder"></i>
+                    </div>
+                    <h3 class="speaker-name">Dr. Carlos Mendoza</h3>
+                    <p class="speaker-institution">UNAM</p>
+                    <p class="speaker-country"><i class="fa-solid fa-map-marker-alt"></i> México</p>
+                    <button class="btn-secondary speaker-bio-btn" data-speaker="1"><%= __('speakers_bio_btn') %></button>
+                </div>
+                <div class="speaker-card">
+                    <div class="speaker-photo-container">
+                        <i class="fa-solid fa-user-circle speaker-icon-placeholder"></i>
+                    </div>
+                    <h3 class="speaker-name">Dra. Sarah Johnson</h3>
+                    <p class="speaker-institution">MIT</p>
+                    <p class="speaker-country"><i class="fa-solid fa-map-marker-alt"></i> Estados Unidos</p>
+                    <button class="btn-secondary speaker-bio-btn" data-speaker="2"><%= __('speakers_bio_btn') %></button>
+                </div>
+                <div class="speaker-card">
+                    <div class="speaker-photo-container">
+                        <i class="fa-solid fa-user-circle speaker-icon-placeholder"></i>
+                    </div>
+                    <h3 class="speaker-name">Dr. Wei Zhang</h3>
+                    <p class="speaker-institution">Tsinghua University</p>
+                    <p class="speaker-country"><i class="fa-solid fa-map-marker-alt"></i> China</p>
+                    <button class="btn-secondary speaker-bio-btn" data-speaker="3"><%= __('speakers_bio_btn') %></button>
+                </div>
+                <div class="speaker-card">
+                    <div class="speaker-photo-container">
+                        <i class="fa-solid fa-user-circle speaker-icon-placeholder"></i>
+                    </div>
+                    <h3 class="speaker-name">Dra. María García</h3>
+                    <p class="speaker-institution">Universidad de Barcelona</p>
+                    <p class="speaker-country"><i class="fa-solid fa-map-marker-alt"></i> España</p>
+                    <button class="btn-secondary speaker-bio-btn" data-speaker="4"><%= __('speakers_bio_btn') %></button>
+                </div>
+                <div class="speaker-card">
+                    <div class="speaker-photo-container">
+                        <i class="fa-solid fa-user-circle speaker-icon-placeholder"></i>
+                    </div>
+                    <h3 class="speaker-name">Dr. Kenji Tanaka</h3>
+                    <p class="speaker-institution">Tokyo University</p>
+                    <p class="speaker-country"><i class="fa-solid fa-map-marker-alt"></i> Japón</p>
+                    <button class="btn-secondary speaker-bio-btn" data-speaker="5"><%= __('speakers_bio_btn') %></button>
+                </div>
+                <div class="speaker-card">
+                    <div class="speaker-photo-container">
+                        <i class="fa-solid fa-user-circle speaker-icon-placeholder"></i>
+                    </div>
+                    <h3 class="speaker-name">Dra. Ana Silva</h3>
+                    <p class="speaker-institution">Universidade de São Paulo</p>
+                    <p class="speaker-country"><i class="fa-solid fa-map-marker-alt"></i> Brasil</p>
+                    <button class="btn-secondary speaker-bio-btn" data-speaker="6"><%= __('speakers_bio_btn') %></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="estadisticas" class="stats-section animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title"><%= __('stats_title') %></h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fa-solid fa-users stat-icon"></i>
+                    <div class="stat-number" data-target="500">+0</div>
+                    <div class="stat-label"><%= __('stats_attendees') %></div>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-chalkboard-teacher stat-icon"></i>
+                    <div class="stat-number" data-target="20">+0</div>
+                    <div class="stat-label"><%= __('stats_speakers') %></div>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-globe-americas stat-icon"></i>
+                    <div class="stat-number" data-target="10">+0</div>
+                    <div class="stat-label"><%= __('stats_countries') %></div>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-user-graduate stat-icon"></i>
+                    <div class="stat-number" data-target="20">+0</div>
+                    <div class="stat-label"><%= __('stats_graduates') %></div>
+                </div>
+            </div>
+            
+            <div class="stats-extra">
+                <span class="stat-badge"><i class="fa-solid fa-door-open"></i> <%= __('stats_call_open') %></span>
+                <span class="stat-badge"><i class="fa-solid fa-file-lines"></i> <%= __('stats_papers') %></span>
+                <span class="stat-badge"><i class="fa-solid fa-building"></i> <%= __('stats_institutions') %></span>
+                <span class="stat-badge"><i class="fa-solid fa-microphone"></i> <%= __('stats_lectures') %></span>
+            </div>
+        </div>
+    </section>
+
+    <section id="organizadores" class="organizers-section animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title"><%= __('organizers_title') %></h2>
+            <div class="organizers-grid">
+                <div class="organizer-card">
+                    <i class="fa-solid fa-university"></i>
+                    <span>TESCo</span>
+                </div>
+                <div class="organizer-card">
+                    <i class="fa-solid fa-cogs"></i>
+                    <span>División de Ingeniería Industrial</span>
+                </div>
+            </div>
+            
+            <h2 class="section-title"><%= __('sponsors_title') %></h2>
+            <div class="sponsors-grid">
+                <div class="organizer-card" style="opacity: 0.6; font-size: 0.9rem;">
+                    <i class="fa-solid fa-handshake"></i>
+                    <span>Patrocinador 1</span>
+                </div>
+                <div class="organizer-card" style="opacity: 0.6; font-size: 0.9rem;">
+                    <i class="fa-solid fa-handshake"></i>
+                    <span>Patrocinador 2</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="galeria" class="gallery-section animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title"><%= __('gallery_title') %></h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=600" alt="Campus">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600" alt="Laboratorio">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600" alt="Auditorio">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600" alt="Estudiantes">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600" alt="Investigación">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600" alt="Tecnología">
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<div class="modal" id="speaker-modal">
+    <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="speaker-photo-container" style="text-align: center;">
+            <i class="fa-solid fa-user-circle speaker-icon-placeholder" style="font-size: 80px; margin-bottom: 10px;"></i>
+        </div>
+        <h3 id="modal-speaker-name" style="text-align: center; margin-bottom: 5px;">Nombre</h3>
+        <p id="modal-speaker-institution" style="text-align: center; color: var(--primary); font-weight: bold; margin-bottom: 20px;">Institución</p>
+        <div id="modal-speaker-bio">
+            <p>Biografía del ponente... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
