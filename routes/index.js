@@ -39,7 +39,6 @@ router.get('/lang/:code', (req, res) => {
   if (['es', 'en', 'zh'].includes(code)) {
     res.cookie('lang', code, { maxAge: 900000, httpOnly: true });
   }
-  res.redirect('back');
-});
+res.redirect(req.get('Referrer') || '/');});
 
 module.exports = router;
