@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 
-// Función para crear la tabla si no existe
+// Crear tabla si no existe
 const initializeTable = async () => {
     const createTableSQL = `
         CREATE TABLE IF NOT EXISTS users (
@@ -40,80 +40,82 @@ const initializeTable = async () => {
     }
 };
 
-// Ejecutar inicialización
+// Inicializar
 initializeTable();
 
-class User {
-  static async findByUsername(username) {
-    const [rows] = await db.execute('SELECT * FROM users WHERE username = ? OR email = ?', [username, username]);
-    return rows[0];
-  }
+// ==========================================
+// MÉTODOS DEL MODELO
+// ==========================================
 
-  static async findByEmail(email) {
-    const [rows] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
-    return rows[0];
-  }
+const User = {
+    // Buscar usuario por nombre de usuario
+    findByUsername: async (username) => {
+        const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
+        return rows[0] || null;
+    },
 
-  static async findByGoogleId(googleId) {
-    const [rows] = await db.execute('SELECT * FROM users WHERE google_id = ?', [googleId]);
-    return rows[0];
-  }
+    // Buscar usuario por email
+    findByEmail: async (email) => {
+        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+        return rows[0] || null;
+    },
 
-  static async findByVerificationToken(token) {
-    const [rows] = await db.execute('SELECT * FROM users WHERE verification_token = ?', [token]);
-    return rows[0];
-  }
+    // Buscar usuario por ID de Google
+    findByGoogleId: async (googleId) => {
+        const [rows] = await pool.query('SELECT * FROM users WHERE google_id = ?', [googleId]);
+        return rows[0] || null;
+    },
 
-  static async getById(id) {
-    const [rows] = await db.execute('SELECT id, username, fullname, email, role, institution, country, is_verified FROM users WHERE id = ?', [id]);
-    return rows[0];
-  }
+    // Buscar usuario por token de verificación
+    findByVerificationToken: async (token) => {
+        const [rows] = await pool.query('SELECT * FROM users WHERE verification_token = ?', [token]);
+        return rows[0] || null;
+    },
 
-  static async getAll() {
-    const [rows] = await db.query('SELECT id, username, fullname, email, role, institution, country, is_verified FROM users');
-    return rows;
-  }
+    // Crear nuevo usuario
+    create: async (userData) => {
+        const { username, fullname, email, password, institution, country, role, is_verified, verification_token, google_id } = userData;
+        const [result] = await pool.query(
+            `INSERT INTO users 
+            (username, fullname, email, password, institution, country, role, is_verified, verification_token, google_id) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [username, fullname, email, password, institution || null, country || null, role || 'user', is_verified || 0, verification_token || null, google_id || null]
+        );
+        return result.insertId;
+    },
 
-  static async create(data) {
-    const sql = `INSERT INTO users (username, fullname, email, password, google_id, institution, country, role, is_verified, verification_token) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    
-    const params = [
-      data.username || null,
-      data.fullname,
-      data.email,
-      data.password || '',
-      data.google_id || null,
-      data.institution || null,
-      data.country || null,
-      data.role || 'assistant',
-      data.is_verified || 0,
-      data.verification_token || null
-    ];
-    
-    const [result] = await db.execute(sql, params);
-    return result.insertId;
-  }
+    // Verificar usuario
+    verifyUser: async (userId) => {
+        await pool.query('UPDATE users SET is_verified = 1, verification_token = NULL WHERE id = ?', [userId]);
+    },
 
-  static async verifyUser(id) {
-    const [result] = await db.execute('UPDATE users SET is_verified = 1, verification_token = NULL WHERE id = ?', [id]);
-    return result.affectedRows > 0;
-  }
+    // Actualizar usuario
+    update: async (userId, userData) => {
+        const { fullname, email, institution, country } = userData;
+        const [result] = await pool.query(
+            'UPDATE users SET fullname = ?, email = ?, institution = ?, country = ? WHERE id = ?',
+            [fullname, email, institution, country, userId]
+        );
+        return result.affectedRows > 0;
+    },
 
-  static async delete(id) {
-    const [result] = await db.execute('DELETE FROM users WHERE id = ?', [id]);
-    return result.affectedRows > 0;
-  }
+    // Cambiar contraseña
+    updatePassword: async (userId, newPassword) => {
+        const [result] = await pool.query('UPDATE users SET password = ? WHERE id = ?', [newPassword, userId]);
+        return result.affectedRows > 0;
+    },
 
-  static async updateRole(id, role) {
-    const [result] = await db.execute('UPDATE users SET role = ? WHERE id = ?', [role, id]);
-    return result.affectedRows > 0;
-  }
+    // Eliminar usuario
+    delete: async (userId) => {
+        const [result] = await pool.query('DELETE FROM users WHERE id = ?', [userId]);
+        return result.affectedRows > 0;
+    },
 
-  static async countAll() {
-    const [rows] = await db.query('SELECT COUNT(*) as total FROM users');
-    return rows[0].total;
-  }
-}
+    // Obtener todos los usuarios (para admin)
+    findAll: async () => {
+        const [rows] = await pool.query('SELECT id, username, fullname, email, role, is_verified, created_at FROM users ORDER BY id DESC');
+        return rows;
+    }
+};
 
 module.exports = User;
