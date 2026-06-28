@@ -11,7 +11,7 @@ exports.login = async (req, res) => {
     const { username, password } = req.body;
     
     if (!username || !password) {
-      req.session.error_msg = req.i18n.__('Please fill all fields');
+      req.session.error_msg = req.__('Please fill all fields');
       return res.redirect('/acceso');
     }
 
@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
 
     if (user && await bcrypt.compare(password, user.password)) {
       if (user.is_verified === 0 && user.role !== 'admin') {
-        req.session.error_msg = req.i18n.__('Debe verificar su correo electrónico antes de iniciar sesión.');
+        req.session.error_msg = req.__('Debe verificar su correo electrónico antes de iniciar sesión.');
         return res.redirect('/acceso');
       }
 
@@ -47,7 +47,7 @@ exports.login = async (req, res) => {
         return res.redirect('/dashboard');
       }
     } else {
-      req.session.error_msg = req.i18n.__('Usuario o contraseña incorrectos.');
+      req.session.error_msg = req.__('Usuario o contraseña incorrectos.');
       return res.redirect('/acceso');
     }
   } catch (error) {
@@ -62,12 +62,12 @@ exports.register = async (req, res) => {
     const { fullname, email, username, institution, country, password, confirm_password } = req.body;
 
     if (!fullname || !email || !username || !password) {
-      req.session.error_msg = req.i18n.__('Por favor, complete los campos obligatorios.');
+      req.session.error_msg = req.__('Por favor, complete los campos obligatorios.');
       return res.redirect('/acceso#registro');
     }
 
     if (password !== confirm_password) {
-      req.session.error_msg = req.i18n.__('Las contraseñas no coinciden.');
+      req.session.error_msg = req.__('Las contraseñas no coinciden.');
       return res.redirect('/acceso#registro');
     }
 
@@ -75,7 +75,7 @@ exports.register = async (req, res) => {
     const existingEmail = await User.findByEmail(email);
 
     if (existingUser || existingEmail) {
-      req.session.error_msg = req.i18n.__('El nombre de usuario o correo ya está en uso.');
+      req.session.error_msg = req.__('El nombre de usuario o correo ya está en uso.');
       return res.redirect('/acceso#registro');
     }
 
@@ -106,10 +106,10 @@ exports.register = async (req, res) => {
       `;
       await mailer.sendEmail(email, "Verifica tu cuenta - Congreso TESCo 2026", mensaje);
 
-      req.session.success_msg = req.i18n.__('Cuenta creada. Por favor revisa tu correo electrónico para verificar tu cuenta.');
+      req.session.success_msg = req.__('Cuenta creada. Por favor revisa tu correo electrónico para verificar tu cuenta.');
       res.redirect('/acceso');
     } else {
-      req.session.error_msg = req.i18n.__('Error al crear la cuenta. Intente nuevamente.');
+      req.session.error_msg = req.__('Error al crear la cuenta. Intente nuevamente.');
       res.redirect('/acceso#registro');
     }
   } catch (error) {
@@ -123,7 +123,7 @@ exports.verify = async (req, res) => {
   try {
     const token = req.query.token;
     if (!token) {
-      req.session.error_msg = req.i18n.__('Enlace de verificación inválido.');
+      req.session.error_msg = req.__('Enlace de verificación inválido.');
       return res.redirect('/acceso');
     }
 
@@ -139,9 +139,9 @@ exports.verify = async (req, res) => {
       `;
       await mailer.sendEmail(user.email, "¡Bienvenido al Congreso TESCo 2026!", mensaje);
 
-      req.session.success_msg = req.i18n.__('Tu cuenta ha sido verificada con éxito. Ya puedes iniciar sesión.');
+      req.session.success_msg = req.__('Tu cuenta ha sido verificada con éxito. Ya puedes iniciar sesión.');
     } else {
-      req.session.error_msg = req.i18n.__('El enlace de verificación es inválido o ya ha expirado.');
+      req.session.error_msg = req.__('El enlace de verificación es inválido o ya ha expirado.');
     }
     res.redirect('/acceso');
   } catch (error) {
