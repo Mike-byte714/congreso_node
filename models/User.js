@@ -1,4 +1,47 @@
-const db = require('../config/db');
+const pool = require('../config/db');
+
+// Función para crear la tabla si no existe
+const initializeTable = async () => {
+    const createTableSQL = `
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(50) UNIQUE NOT NULL,
+            fullname VARCHAR(100) NOT NULL,
+            email VARCHAR(100) UNIQUE NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            institution VARCHAR(100),
+            country VARCHAR(50),
+            role ENUM('admin', 'assistant', 'evaluator', 'user') DEFAULT 'user',
+            is_verified BOOLEAN DEFAULT 0,
+            verification_token VARCHAR(100),
+            google_id VARCHAR(100),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )
+    `;
+    
+    try {
+        await pool.query(createTableSQL);
+        console.log('✅ Tabla users creada/verificada correctamente');
+        
+        // Verificar si existe admin, si no crearlo
+        const [rows] = await pool.query("SELECT * FROM users WHERE username = 'admin'");
+        if (rows.length === 0) {
+            await pool.query(`
+                INSERT INTO users (username, fullname, email, password, role, is_verified)
+                VALUES ('admin', 'Administrador', 'admin@tesco.com', 
+                       '$2a$10$N9qo8uLOickgx2ZMRZoMy.Mr/.cZxq5D7e5xSTtKxqYQvZxYxYxYx',
+                       'admin', 1)
+            `);
+            console.log('✅ Usuario admin creado');
+        }
+    } catch (error) {
+        console.error('❌ Error al crear tabla users:', error.message);
+    }
+};
+
+// Ejecutar inicialización
+initializeTable();
 
 class User {
   static async findByUsername(username) {
