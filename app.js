@@ -1,11 +1,15 @@
 const express = require('express');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const cookieParser = require('cookie-parser');
 const i18n = require('i18n');
 const path = require('path');
 require('dotenv').config();
 
 const app = express();
+
+// Importar conexión a la base de datos
+const pool = require('./db');
 
 // ==========================================
 // Configuración de Internacionalización (i18n)
@@ -18,7 +22,7 @@ i18n.configure({
   queryParameter: 'lang',
   autoReload: true,
   updateFiles: false,
-  objectNotation: true // Para usar anidación tipo "header.title"
+  objectNotation: true
 });
 
 // ==========================================
@@ -29,12 +33,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(i18n.init);
 
-// Configuración de Sesiones
+// Configurar el store de MySQL para sesiones
+const sessionStore = new MySQLStore({
+  createDatabaseTable: true,
+  schema: {
+    tableName: 'sessions'
+  }
+}, pool);
+
+// Configuración de Sesiones con MySQL Store
 app.use(session({
   secret: process.env.SESSION_SECRET || 'secret_fallback',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 } // 24 horas
+  store: sessionStore,
+  cookie: { 
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 1000 * 60 * 60 * 24 // 24 horas
+  }
 }));
 
 // Pasar variables globales a todas las vistas EJS
