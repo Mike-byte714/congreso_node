@@ -279,7 +279,7 @@ img {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #ef4444;
+    background-color: transparent;
     color: #ffffff !important;
     padding: 8px 10px;
     border-radius: 0 6px 6px 0;
@@ -292,61 +292,71 @@ img {
     background-color: #dc2626;
 }
 
+/* Dropdown de idioma */
 .lang-dropdown {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 .lang-dropdown-btn {
-    background: gray;
-    border: 1px solid #cbd5e1;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    color: black;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #1e293b;
+  transition: all 0.2s;
+}
+
+.lang-dropdown-btn:hover {
+  background: #f1f5f9;
 }
 
 .lang-dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: var(--white);
-    min-width: 120px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border-radius: 6px;
-    z-index: 1001;
-    overflow: hidden;
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  min-width: 140px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  border-radius: 8px;
+  z-index: 1000;
+  margin-top: 6px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
 }
 
-/* Abrir dropdown: hover en desktop O clase .open añadida por JS (móvil/clic) */
-.lang-dropdown:hover .lang-dropdown-content,
 .lang-dropdown-content.open {
-    display: flex;
-    flex-direction: column;
+  display: block;
 }
 
-.lang-dropdown-content .lang-btn {
-    display: block;
-    width: 100%;
-    text-align: left;
-    padding: 10px 15px;
-    background: red;
-    border: none;
-    font-size: 0.9rem;
-    cursor: pointer;
-    color: var(--text-primary);
-    text-decoration: none;
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #1e293b;
+  transition: background 0.2s;
+  font-size: 14px;
 }
 
-.lang-dropdown-content .lang-btn:hover {
-    background-color: var(--bg-general);
+.lang-btn:hover {
+  background: #f1f5f9;
 }
 
+.lang-flag {
+  font-size: 18px;
+}
+
+.lang-text {
+  font-weight: 500;
+}
 .dark-mode-toggle {
     background: transparent;
     border: none;
