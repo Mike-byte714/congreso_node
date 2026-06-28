@@ -2,7 +2,6 @@ const express = require('express');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const cookieParser = require('cookie-parser');
-const i18n = require('i18n');
 const path = require('path');
 require('dotenv').config();
 
@@ -14,18 +13,9 @@ const app = express();
 const pool = require('./config/db');
 
 // ==========================================
-// Configuración de Internacionalización (i18n)
+// Importar middleware de i18n manual
 // ==========================================
-i18n.configure({
-  locales: ['es', 'en', 'zh'],
-  directory: path.join(__dirname, 'locales'),
-  defaultLocale: 'es',
-  cookie: 'lang',
-  queryParameter: 'lang',
-  autoReload: true,
-  updateFiles: false,
-  objectNotation: true
-});
+const i18nMiddleware = require('./middleware/i18n');
 
 // ==========================================
 // Middlewares Globales
@@ -33,9 +23,6 @@ i18n.configure({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-// ⚠️ IMPORTANTE: i18n.init DEBE estar ANTES de las rutas
-app.use(i18n.init);  // ⬅️ Esta línea es CRUCIAL
 
 // ==========================================
 // Configuración de Sesiones con MySQL Store
@@ -54,28 +41,23 @@ app.use(session({
   store: sessionStore,
   cookie: { 
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 1000 * 60 * 60 * 24 // 24 horas
+    maxAge: 1000 * 60 * 60 * 24
   }
 }));
+
+// ==========================================
+// ⚠️ i18n Middleware - ANTES de las rutas
+// ==========================================
+app.use(i18nMiddleware);
 
 // ==========================================
 // Middleware para pasar variables globales a las vistas
 // ==========================================
 app.use((req, res, next) => {
-  // Verificar que i18n esté disponible
-  if (!req.i18n) {
-    console.error('❌ i18n NO está disponible en la solicitud');
-    console.error('Headers:', req.headers);
-    console.error('Cookies:', req.cookies);
-  }
-  
   res.locals.user = req.session.user || null;
-  res.locals.lang = req.getLocale ? req.getLocale() : 'es';
   res.locals.success_msg = req.session.success_msg || null;
   res.locals.error_msg = req.session.error_msg || null;
-  res.locals.__ = req.i18n ? req.i18n.__.bind(req.i18n) : (key) => key;
   
-  // Limpiar mensajes flash después de pasarlos a la vista
   delete req.session.success_msg;
   delete req.session.error_msg;
   
@@ -105,12 +87,13 @@ app.use('/project', projectRoutes);
 app.use('/admin', adminRoutes);
 
 // ==========================================
-// Manejo de errores 404 (Página no encontrada)
+// Manejo de errores 404
 // ==========================================
 app.use((req, res) => {
+  const __ = res.locals.__ || ((key) => key);
   res.status(404).render('404', { 
     title: 'Página no encontrada',
-    __: req.i18n ? req.i18n.__.bind(req.i18n) : (key) => key
+    __: __
   });
 });
 
@@ -121,10 +104,11 @@ app.use((err, req, res, next) => {
   console.error('❌ Error:', err.message);
   console.error(err.stack);
   
+  const __ = res.locals.__ || ((key) => key);
   res.status(err.status || 500).render('error', {
     title: 'Error del servidor',
     message: err.message || 'Ha ocurrido un error inesperado',
-    __: req.i18n ? req.i18n.__.bind(req.i18n) : (key) => key
+    __: __
   });
 });
 

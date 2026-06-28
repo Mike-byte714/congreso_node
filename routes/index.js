@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// ==========================================
-// Middleware para verificar si NO está logueado (solo para acceso)
-// ==========================================
 const forwardAuthenticated = (req, res, next) => {
   if (!req.session.user) {
     return next();
@@ -15,27 +12,18 @@ const forwardAuthenticated = (req, res, next) => {
 };
 
 // ==========================================
-// Middleware para renderizar vistas con i18n
+// Renderizar vistas con i18n
 // ==========================================
 const renderWithI18n = (view) => (req, res) => {
-  // Limpiar mensajes flash
   const success_msg = req.session.success_msg || null;
   const error_msg = req.session.error_msg || null;
   
   delete req.session.success_msg;
   delete req.session.error_msg;
 
-  // Obtener el idioma actual
-  const lang = req.getLocale ? req.getLocale() : 'es';
-  
-  // Verificar que i18n está disponible
-  if (!req.i18n) {
-    console.error('⚠️ i18n no está disponible en la solicitud');
-  }
-  
   res.render(view, {
-    __: req.i18n ? req.i18n.__.bind(req.i18n) : (key) => key, // ⬅️ Función de traducción
-    lang: lang,
+    __: req.__ || ((key) => key),
+    lang: req.lang || 'es',
     user: req.session.user || null,
     success_msg: success_msg,
     error_msg: error_msg
@@ -46,55 +34,40 @@ const renderWithI18n = (view) => (req, res) => {
 // Rutas Públicas
 // ==========================================
 router.get('/', renderWithI18n('index'));
-
 router.get('/convocatoria', renderWithI18n('convocatoria'));
-
 router.get('/biblioteca', renderWithI18n('biblioteca'));
-
 router.get('/programa', renderWithI18n('programa'));
-
 router.get('/acceso', forwardAuthenticated, renderWithI18n('acceso'));
 
 // ==========================================
-// Endpoint para cambiar de idioma
+// Cambiar de idioma
 // ==========================================
 router.get('/lang/:code', (req, res) => {
   const code = req.params.code;
-  
-  // Validar que el idioma sea soportado
   if (['es', 'en', 'zh'].includes(code)) {
-    // Guardar idioma en cookie por 30 días
     res.cookie('lang', code, { 
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 días
+      maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true 
     });
-    
-    // Guardar en sesión también para mantener consistencia
-    if (req.session) {
-      req.session.lang = code;
-    }
   }
-  
-  // Redirigir a la página anterior o al inicio
-  const referer = req.get('Referrer') || '/';
-  res.redirect(referer);
+  res.redirect(req.get('Referrer') || '/');
 });
 
 // ==========================================
-// Ruta de prueba para verificar traducciones
+// Ruta de prueba
 // ==========================================
 router.get('/test-i18n', (req, res) => {
-  const lang = req.getLocale ? req.getLocale() : 'es';
+  const __ = req.__ || ((key) => key);
   res.json({
-    lang: lang,
-    i18n_available: !!req.i18n,
+    lang: req.lang || 'es',
+    translations_available: !!req.__,
     messages: {
-      home: req.i18n ? req.i18n.__('nav_home') : 'nav_home',
-      convocatoria: req.i18n ? req.i18n.__('nav_convocatoria') : 'nav_convocatoria',
-      program: req.i18n ? req.i18n.__('nav_program') : 'nav_program',
-      library: req.i18n ? req.i18n.__('nav_library') : 'nav_library',
-      speakers: req.i18n ? req.i18n.__('nav_speakers') : 'nav_speakers',
-      contact: req.i18n ? req.i18n.__('nav_contact') : 'nav_contact'
+      home: __('nav_home'),
+      convocatoria: __('nav_convocatoria'),
+      program: __('nav_program'),
+      library: __('nav_library'),
+      speakers: __('nav_speakers'),
+      contact: __('nav_contact')
     }
   });
 });
