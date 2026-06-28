@@ -34,8 +34,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// ⚠️ IMPORTANTE: i18n.init debe ir ANTES de las rutas
-app.use(i18n.init);
+// ⚠️ IMPORTANTE: i18n.init DEBE estar ANTES de las rutas
+app.use(i18n.init);  // ⬅️ Esta línea es CRUCIAL
 
 // ==========================================
 // Configuración de Sesiones con MySQL Store
@@ -62,11 +62,18 @@ app.use(session({
 // Middleware para pasar variables globales a las vistas
 // ==========================================
 app.use((req, res, next) => {
+  // Verificar que i18n esté disponible
+  if (!req.i18n) {
+    console.error('❌ i18n NO está disponible en la solicitud');
+    console.error('Headers:', req.headers);
+    console.error('Cookies:', req.cookies);
+  }
+  
   res.locals.user = req.session.user || null;
   res.locals.lang = req.getLocale ? req.getLocale() : 'es';
   res.locals.success_msg = req.session.success_msg || null;
   res.locals.error_msg = req.session.error_msg || null;
-  res.locals.__ = req.i18n ? req.i18n.__ : (key) => key;
+  res.locals.__ = req.i18n ? req.i18n.__.bind(req.i18n) : (key) => key;
   
   // Limpiar mensajes flash después de pasarlos a la vista
   delete req.session.success_msg;
@@ -103,7 +110,7 @@ app.use('/admin', adminRoutes);
 app.use((req, res) => {
   res.status(404).render('404', { 
     title: 'Página no encontrada',
-    __: req.i18n ? req.i18n.__ : (key) => key
+    __: req.i18n ? req.i18n.__.bind(req.i18n) : (key) => key
   });
 });
 
@@ -117,7 +124,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).render('error', {
     title: 'Error del servidor',
     message: err.message || 'Ha ocurrido un error inesperado',
-    __: req.i18n ? req.i18n.__ : (key) => key
+    __: req.i18n ? req.i18n.__.bind(req.i18n) : (key) => key
   });
 });
 
@@ -128,4 +135,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`);
   console.log(`🌍 Entorno: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`📁 Directorio de locales: ${path.join(__dirname, 'locales')}`);
 });
