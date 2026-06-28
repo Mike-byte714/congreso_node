@@ -9,7 +9,7 @@ require('dotenv').config();
 const app = express();
 
 // Importar conexión a la base de datos
-const pool = require('./db');
+const pool = require('./config/db');
 
 // ==========================================
 // Configuración de Internacionalización (i18n)
