@@ -15,7 +15,7 @@ const forwardAuthenticated = (req, res, next) => {
 };
 
 // ==========================================
-// Middleware para pasar variables a las vistas
+// Middleware para renderizar vistas con i18n
 // ==========================================
 const renderWithI18n = (view) => (req, res) => {
   // Limpiar mensajes flash
@@ -27,6 +27,11 @@ const renderWithI18n = (view) => (req, res) => {
 
   // Obtener el idioma actual
   const lang = req.getLocale ? req.getLocale() : 'es';
+  
+  // Verificar que i18n está disponible
+  if (!req.i18n) {
+    console.error('⚠️ i18n no está disponible en la solicitud');
+  }
   
   res.render(view, {
     __: req.i18n ? req.i18n.__.bind(req.i18n) : (key) => key, // ⬅️ Función de traducción
@@ -70,18 +75,19 @@ router.get('/lang/:code', (req, res) => {
     }
   }
   
-  // ✅ Redirigir a la página anterior o al inicio
+  // Redirigir a la página anterior o al inicio
   const referer = req.get('Referrer') || '/';
   res.redirect(referer);
 });
 
 // ==========================================
-// Ruta de prueba para verificar traducciones (Opcional)
+// Ruta de prueba para verificar traducciones
 // ==========================================
 router.get('/test-i18n', (req, res) => {
   const lang = req.getLocale ? req.getLocale() : 'es';
   res.json({
     lang: lang,
+    i18n_available: !!req.i18n,
     messages: {
       home: req.i18n ? req.i18n.__('nav_home') : 'nav_home',
       convocatoria: req.i18n ? req.i18n.__('nav_convocatoria') : 'nav_convocatoria',
