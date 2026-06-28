@@ -41,12 +41,12 @@ app.use(session({
   store: sessionStore,
   cookie: { 
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 1000 * 60 * 60 * 24
+    maxAge: 1000 * 60 * 60 * 24 // 24 horas
   }
 }));
 
 // ==========================================
-// ⚠️ i18n Middleware - ANTES de las rutas
+// i18n Middleware - ANTES de las rutas
 // ==========================================
 app.use(i18nMiddleware);
 
@@ -55,9 +55,13 @@ app.use(i18nMiddleware);
 // ==========================================
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
+  res.locals.lang = req.lang || 'es';
+  res.locals.__ = req.__ || ((key) => key);
   res.locals.success_msg = req.session.success_msg || null;
   res.locals.error_msg = req.session.error_msg || null;
+  res.locals.siteUrl = process.env.SITE_URL || 'http://localhost:3000';
   
+  // Limpiar mensajes flash después de pasarlos a la vista
   delete req.session.success_msg;
   delete req.session.error_msg;
   
@@ -77,13 +81,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 const indexRoutes = require('./routes/index');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
-const projectRoutes = require('./routes/project');
 const adminRoutes = require('./routes/admin');
 
 app.use('/', indexRoutes);
 app.use('/auth', authRoutes);
 app.use('/dashboard', userRoutes);
-app.use('/project', projectRoutes);
 app.use('/admin', adminRoutes);
 
 // ==========================================
@@ -93,7 +95,9 @@ app.use((req, res) => {
   const __ = res.locals.__ || ((key) => key);
   res.status(404).render('404', { 
     title: 'Página no encontrada',
-    __: __
+    __: __,
+    user: req.session.user || null,
+    lang: req.lang || 'es'
   });
 });
 
@@ -108,7 +112,9 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).render('error', {
     title: 'Error del servidor',
     message: err.message || 'Ha ocurrido un error inesperado',
-    __: __
+    __: __,
+    user: req.session.user || null,
+    lang: req.lang || 'es'
   });
 });
 

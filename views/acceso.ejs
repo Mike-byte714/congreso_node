@@ -2,7 +2,7 @@
 
 <div class="page-header">
     <div class="container">
-        <h1><%= __('login_title') %> / <%= __('register_title') %></h1>
+        <h1><%= __('login_title') || 'Iniciar Sesión' %> / <%= __('register_title') || 'Registrarse' %></h1>
     </div>
 </div>
 
@@ -10,22 +10,22 @@
     <div class="auth-container">
         <!-- Login Form -->
         <div class="auth-panel" id="login">
-            <h2 class="auth-title"><%= __('login_title') %></h2>
+            <h2 class="auth-title"><%= __('login_title') || 'Iniciar Sesión' %></h2>
             
             <form action="/auth/login" method="POST">
                 <div class="form-group">
-                    <label for="username"><%= __('login_username') %></label>
+                    <label for="username"><%= __('login_username') || 'Usuario o Correo' %></label>
                     <input type="text" id="username" name="username" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="password"><%= __('login_password') %></label>
+                    <label for="password"><%= __('login_password') || 'Contraseña' %></label>
                     <input type="password" id="password" name="password" class="form-control" required>
                 </div>
                 <div class="form-options">
                     <label><input type="checkbox"> Recordarme</label>
-                    <a href="#" style="color: var(--primary);"><%= __('login_forgot') %></a>
+                    <a href="#" style="color: var(--primary);"><%= __('login_forgot') || '¿Olvidaste tu contraseña?' %></a>
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%;"><%= __('login_btn') %></button>
+                <button type="submit" class="btn-primary" style="width: 100%;"><%= __('login_btn') || 'Ingresar' %></button>
             </form>
             
             <div style="text-align: center; margin: 20px 0; color: var(--text-secondary);">O inicia sesión con</div>
@@ -36,7 +36,7 @@
                      data-client_id="358668615160-icec4contl9ssmmqtrdmctg7c7ntucb4.apps.googleusercontent.com"
                      data-context="signin"
                      data-ux_mode="popup"
-                     data-login_uri="<%= typeof process !== 'undefined' && process.env.SITE_URL ? process.env.SITE_URL : 'http://localhost:3000' %>/auth/google-callback"
+                     data-login_uri="<%= siteUrl %>/auth/google-callback"
                      data-auto_prompt="false">
                 </div>
 
@@ -53,43 +53,125 @@
 
         <!-- Register Form -->
         <div class="auth-panel" id="registro">
-            <h2 class="auth-title"><%= __('register_title') %></h2>
+            <h2 class="auth-title"><%= __('register_title') || 'Registrarse' %></h2>
 
             <form action="/auth/register" method="POST">
                 <div class="form-group">
-                    <label for="reg_fullname"><%= __('register_fullname') %> *</label>
+                    <label for="reg_fullname"><%= __('register_fullname') || 'Nombre Completo' %> *</label>
                     <input type="text" id="reg_fullname" name="fullname" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="reg_email"><%= __('register_email') %> *</label>
+                    <label for="reg_email"><%= __('register_email') || 'Correo Electrónico' %> *</label>
                     <input type="email" id="reg_email" name="email" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="reg_username"><%= __('register_username') %> *</label>
+                    <label for="reg_username"><%= __('register_username') || 'Nombre de Usuario' %> *</label>
                     <input type="text" id="reg_username" name="username" class="form-control" required>
                 </div>
                 <div class="form-group" style="display: flex; gap: 15px;">
                     <div style="flex: 1;">
-                        <label for="reg_institution"><%= __('register_institution') %></label>
+                        <label for="reg_institution"><%= __('register_institution') || 'Institución' %></label>
                         <input type="text" id="reg_institution" name="institution" class="form-control">
                     </div>
                     <div style="flex: 1;">
-                        <label for="reg_country"><%= __('register_country') %></label>
+                        <label for="reg_country"><%= __('register_country') || 'País' %></label>
                         <input type="text" id="reg_country" name="country" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="reg_password"><%= __('register_password') %> *</label>
+                    <label for="reg_password"><%= __('register_password') || 'Contraseña' %> *</label>
                     <input type="password" id="reg_password" name="password" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="reg_confirm_password"><%= __('register_confirm') %> *</label>
+                    <label for="reg_confirm_password"><%= __('register_confirm') || 'Confirmar Contraseña' %> *</label>
                     <input type="password" id="reg_confirm_password" name="confirm_password" class="form-control" required>
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;"><%= __('register_btn') %></button>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;"><%= __('register_btn') || 'Crear Cuenta' %></button>
             </form>
         </div>
     </div>
 </main>
 
 <%- include('partials/footer') %>
+
+<style>
+.auth-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin: 40px 0;
+}
+
+.auth-panel {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.auth-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #0f172a;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #1e293b;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #0d9488;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.btn-primary {
+    background: #0d9488;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background: #0f766e;
+}
+
+@media (max-width: 768px) {
+    .auth-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
+</style>
